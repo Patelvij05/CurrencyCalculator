@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  CurrencyCalculator
+
+  Created by Vijay Patel on 22/11/20.
+  
+*/
+
+"ErrorNetTitle" = "Something went wrong";
+"ErrorNetBody" = "Failed to download latest currency rates. Please check your internet connection";
+"ErrorBack" = "Back";
+"ErrorRetry" = "Retry";
+
+

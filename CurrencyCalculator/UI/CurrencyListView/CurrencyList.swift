@@ -36,7 +36,8 @@ struct CurrencyList: View {
     var body: some View {
         NavigationView {
             VStack {
-                TextField("$1", text: $amount)
+                // MARK: Textfield
+                TextField("PlaceholderValue".localized(), text: $amount)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .keyboardType(.numberPad)
                     .padding()
@@ -47,8 +48,8 @@ struct CurrencyList: View {
                         .sheet(isPresented: self.$showCurrencySelection) {
                             CurrencySelectionView(
                                 showCurrencySelection: self.$showCurrencySelection,
-                                dataCurrency: $viewModel.dataCurrency,
                                 selection: $base_currency)
+                                .environment(\.managedObjectContext, self.viewContext)
                                 .onDisappear {
                                     DispatchQueue.main.async {
                                         for rate in self.managedRate {
@@ -60,19 +61,21 @@ struct CurrencyList: View {
                                 }
                         }
                         .onAppear(){
-                            self.viewModel.fetchCurrencyList()
+                            if monitor.isConnected {
+                                self.viewModel.fetchCurrencyList()
+                            }
                         }
                     
-                    // MARK: Selected Currency Exchange Rates
+                    // MARK: Exchange Rates
                     ExchangeRateView(amount: $amount, rate: $exchangeRate)
                     
                 }
                 
                 // MARK: Exchange Rates List
                 List(self.managedRate, id: \.self) { rate in
-                        CurrencyCellView(amount: self.$amount,
-                                         name: rate.currency ?? "",
-                                         rate: rate.value)
+                    CurrencyCellView(amount: self.$amount,
+                                     name: rate.currency ?? "",
+                                     rate: rate.value)
                     
                 }
                 .onReceive(timer) { _ in
@@ -87,7 +90,7 @@ struct CurrencyList: View {
                         .frame(width: 0, height: 0)
                         .onAppear {
                             DispatchQueue.main.async {
-                                self.clearExistingRates()
+                                self.storeCurrencyListLocally()
                                 self.storeRateListLocally()
                             }
                         }
@@ -95,39 +98,36 @@ struct CurrencyList: View {
                 
                 // MARK: On Result Error
                 if self.viewModel.error != nil {
-                    Text("")
-                        .frame(width: 0, height: 0)
-                        .onAppear {
-                            self.showErrorAlert = true
-                        }
-                        .alert(isPresented: self.$showErrorAlert) {
-                            Alert(
-                                title: Text("ErrorNetTitle"),
-                                message: Text("ErrorNetBody"),
-                                primaryButton: .default(Text("ErrorRetry")) {
-                                    self.showErrorAlert = false
-                                    self.viewModel.reFetchCurrencyRates()
-                                },
-                                secondaryButton: .cancel(Text("ErrorBack"))
-                            )
-                        }
+                    if self.managedRate.count == 0 {
+                        Text("")
+                            .frame(width: 0, height: 0)
+                            .onAppear {
+                                self.showErrorAlert = true
+                            }
+                            .alert(isPresented: self.$showErrorAlert) {
+                                Alert(
+                                    title: Text("ErrorNetTitle".localized()),
+                                    message: Text("ErrorNetBody".localized()),
+                                    primaryButton: .default(Text("ErrorRetry")) {
+                                        self.showErrorAlert = false
+                                        self.viewModel.reFetchCurrencyRates()
+                                    },
+                                    secondaryButton: .cancel(Text("ErrorBack"))
+                                )
+                            }
+                    }
                 }
                 
                 Spacer()
             }
-            .navigationTitle("Currency Calculator")
-            .alert(isPresented: $showAlertSheet, content: {
-                if monitor.isConnected {
-                return Alert(title: Text("Success!"), message: Text("The network request can be performed."), dismissButton: .default(Text("OK")))
-                }
-                return Alert(title: Text("No Internet Connection!"), message: Text("Please enable Wifi or Cellular data."), dismissButton: .default(Text("Cancel")))
-                })
+            .navigationTitle("AppName")
         }
     }
 }
 
 extension CurrencyList {
     
+    // MARK: Save Data Locally
     private func saveData() {
         do {
             try viewContext.save()
@@ -136,6 +136,7 @@ extension CurrencyList {
         }
     }
     
+    // MARK: Clear Existing Rates
     private func clearExistingRates() {
         managedRate.forEach { rate in
             viewContext.delete(rate)
@@ -143,16 +144,28 @@ extension CurrencyList {
         saveData()
     }
     
-//    private func storeCurrencyListLocally() {
-//        viewModel.dataCurrency.forEach { key, value in
-//            let manageCurrency = ManageCurrencyList(context: viewContext)
-//            manageCurrency.name = key
-//            manageCurrency.fullname = viewModel.dataCurrency[key]
-//            saveData()
-//        }
-//    }
+    // MARK: Clear Existing Currency
+    private func clearExistingCurrency() {
+        managedCurrency.forEach { currency in
+            viewContext.delete(currency)
+        }
+        saveData()
+    }
     
+    // MARK: Store Currency Locally
+    private func storeCurrencyListLocally() {
+        self.clearExistingCurrency()
+        viewModel.dataCurrency.forEach { key, value in
+            let manageCurrency = ManageCurrencyList(context: viewContext)
+            manageCurrency.name = key
+            manageCurrency.fullname = viewModel.dataCurrency[key]
+            saveData()
+        }
+    }
+    
+    // MARK: Store Rates Locally
     private func storeRateListLocally() {
+        self.clearExistingRates()
         var timestamp: Int64?
         var source: String?
         viewModel.data.forEach { key, value in
@@ -165,7 +178,7 @@ extension CurrencyList {
                 source = rate.source
             }
             
-            manageRate.source = source ?? "USD"
+            manageRate.source = source ?? "BaseCurrency".localized()
             manageRate.timestamp = timestamp ?? 0
             saveData()
         }

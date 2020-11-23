@@ -15,7 +15,7 @@ struct DropdownView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Select Currency")
+                Text("Selection".localized())
                     .font(.system(size: ViewConstants.fontMedium, weight:
                                     .semibold))
                 Spacer()
@@ -27,7 +27,7 @@ struct DropdownView: View {
                     Text(currency)
                         .font(.system(size: ViewConstants.fontMedium, weight: .semibold))
                     Spacer()
-                    Image(systemName: "arrowtriangle.down.circle")
+                    Image(systemName: "DropDownIcon".localized())
                         .font(.system(size: ViewConstants.fontMedium, weight: .medium))
                 }
             }.buttonStyle(PrimaryButtonStyle(fillColor: .darkPrimaryButton))
@@ -38,11 +38,11 @@ struct DropdownView: View {
 struct DropdownView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DropdownView(currency: .constant("USD"),
+            DropdownView(currency: .constant("BaseCurrency".localized()),
                 showCurrencySelection: .constant(false))
         }
         NavigationView {
-            DropdownView(currency: .constant("USD"),
+            DropdownView(currency: .constant("BaseCurrency".localized()),
                 showCurrencySelection: .constant(false))
         }.environment(\.colorScheme, .dark)
     }

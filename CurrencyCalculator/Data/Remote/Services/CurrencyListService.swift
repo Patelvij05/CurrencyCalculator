@@ -8,11 +8,14 @@
 import Foundation
 import Combine
 
-//List API
-//http://api.currencylayer.com/list?access_key=e8e9d4533dcc2c6b583f6fba15686cca
-
 enum CurrencyListService {
     static let apiClient = ApiClient()
+    static let httpProtocal = "http"
+    static let baseURL = "api.currencylayer.com"
+    static let listPath = "/list"
+    static let livePath = "/live"
+    static let accessKey = "access_key"
+    static let token = "e8e9d4533dcc2c6b583f6fba15686cca"
 }
 
 extension CurrencyListService {
@@ -22,15 +25,15 @@ extension CurrencyListService {
         
         var components: URLComponents {
             var components = URLComponents()
-            components.scheme = "http"
-            components.host = "api.currencylayer.com"
-            components.path = "/list"
-            components.queryItems = [URLQueryItem(name: "access_key", value: "e8e9d4533dcc2c6b583f6fba15686cca")]
+            components.scheme = httpProtocal
+            components.host = baseURL
+            components.path = listPath
+            components.queryItems = [URLQueryItem(name: accessKey, value: token)]
             return components
         }
         
         guard let url = components.url else {
-            fatalError("Couldn't create URL")
+            fatalError("URLError".localized())
         }
         
         return apiClient.run(URLRequest(url: url))

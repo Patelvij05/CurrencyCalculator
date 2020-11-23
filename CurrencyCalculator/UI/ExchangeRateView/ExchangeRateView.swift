@@ -14,7 +14,7 @@ struct ExchangeRateView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Exchange Rate")
+                Text("Exchange".localized())
                     .font(.system(size: ViewConstants.fontMedium, weight:
                                     .semibold))
                 Spacer()
@@ -22,7 +22,7 @@ struct ExchangeRateView: View {
             Button(action: {}) {
                 HStack {
                     Spacer()
-                    Text("\((Double(self.amount) ?? 0) * rate, specifier: "%.2f")")
+                    Text("\((Double(self.amount) ?? 0) * rate, specifier: "TwoDigits".localized())")
                         .font(.system(size: ViewConstants.fontMedium, weight: .semibold))
                     Spacer()
                 }
@@ -34,11 +34,11 @@ struct ExchangeRateView: View {
 struct ExchangeRateView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ExchangeRateView(amount: .constant("1"),
+            ExchangeRateView(amount: .constant("DefaultValue".localized()),
                              rate: .constant(10.0))
         }
         NavigationView {
-            ExchangeRateView(amount: .constant("1"),
+            ExchangeRateView(amount: .constant("DefaultValue".localized()),
                              rate: .constant(10.0))
         }.environment(\.colorScheme, .dark)
     }

@@ -35,9 +35,7 @@ struct CurrencySelectionRow: View {
 
 struct CurrencySelectionRow_Previews: PreviewProvider {
     static var previews: some View {
-        //        CurrencySelectionRow(currency: Currency(name: "USD", fullName: "Norwegian Kroners", continent: .Europe))
-        //            .previewLayout(.fixed(width: 400, height: 50))
-        CurrencySelectionRow(currency: "USD", fullName: "US Dollar")
+        CurrencySelectionRow(currency: "BaseCurrency".localized(), fullName: "BaseCurrencyFullName".localized())
             .previewLayout(.fixed(width: 400, height: 50))
     }
 }

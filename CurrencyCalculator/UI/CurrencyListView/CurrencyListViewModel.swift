@@ -64,19 +64,4 @@ extension CurrencyListViewModel {
                   })
     }
     
-    /*func fetchQuoteForSpecificCurrency() {
-     cancellable = ExchangeRatesService.requestQuotes()
-     .mapError({ (error) -> Error in
-     self.error = error
-     print("Returned error: \(self.error.debugDescription)")
-     return error
-     })
-     .sink(receiveCompletion: { _ in },
-     receiveValue: { rate in
-     self.data = rate.quotes
-     self.fetchedRates.insert(rate)
-     print("Returned data: \(self.data)")
-     })
-     }*/
-    
 }

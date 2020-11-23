@@ -35,7 +35,7 @@ struct PrimaryButtonStyle: ButtonStyle {
 struct PrimaryButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
         Button(action: {}) {
-            Text("Select Currency")
+            Text("Selection".localized())
         }.buttonStyle(PrimaryButtonStyle())
     }
 }

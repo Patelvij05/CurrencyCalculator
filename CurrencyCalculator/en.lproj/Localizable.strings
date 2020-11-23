@@ -6,9 +6,24 @@
   
 */
 
+"AppName" = "Currency Calculator";
+
 "ErrorNetTitle" = "Something went wrong";
 "ErrorNetBody" = "Failed to download latest currency rates. Please check your internet connection";
 "ErrorBack" = "Back";
 "ErrorRetry" = "Retry";
 
+"BaseCurrency" = "USD";
+"BaseCurrencyFullName" = "US Dollar";
+"DefaultValue" = "1";
+"PlaceholderValue" = "$1";
 
+"Selection" = "Select Currency";
+
+"DropDownIcon" = "arrowtriangle.down.circle";
+
+"Exchange" = "Exchange Rate";
+
+"TwoDigits" = "%.2f";
+
+"URLError" = "Couldn't create URL";

@@ -20,22 +20,3 @@ struct Rate: Codable, Hashable {
     }
 
 }
-
-extension Rate {
-
-//    // Converts from a managed object directly to a Rate object
-//    static func managedRateAsRate(rate: ManageRateList, currencyRates: [ManageCurrencyRate]) -> Rate {
-//        Rate(
-//            success: false,
-//            source: rate.source ?? "",
-//            quotes: Dictionary(
-//                uniqueKeysWithValues: currencyRates.map {
-//                    ($0.name ?? "", Double(truncating: $0.value ?? 0.0 )))
-//                }
-//            ),
-//            timestamp: 0
-//
-//        )
-//    }
-
-}

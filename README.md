@@ -1,3 +1,5 @@
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+
 # CurrencyCalculator
 
 This repository covers following functional requirements:
@@ -27,3 +29,16 @@ Future Scope:
 * Try to cover Uncle Bob’s clean swift architecture(Introduce Clean Swift)
 * Apply all the five design principles( currently covered 2 principles only) of SOLID principles to make software design more flexible, maintainable and scalable.
 
+---
+
+## Contributors
+
+- Vijay Patel <patel.vij05@gmail.com>
+
+---
+
+## License & copyright
+
+© Vijay Patel
+
+Licensed under the [MIT License](LICENSE).

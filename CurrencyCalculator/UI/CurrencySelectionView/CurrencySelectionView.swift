@@ -21,7 +21,6 @@ struct CurrencySelectionView: View {
         NavigationView {
             
             VStack(spacing: 0) {
-                
                 List(self.managedCurrency, id: \.self) { currency in
                     Button(action: {
                         self.selection = currency.name ?? "BaseCurrency".localized()

@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension String{
-
+    // MARK: Substring JPY from USDJPY
     func trimmed() -> String{
         let start = self.index(self.startIndex, offsetBy: 3)
         let end = self.endIndex

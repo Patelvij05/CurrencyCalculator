@@ -16,7 +16,7 @@ struct CurrencyCellView: View {
         HStack {
             Text(name)
             Spacer()
-            Text("\((Double(self.amount) ?? 0) * rate, specifier: "%.2f")")
+            Text("\((Double(self.amount) ?? 0) * rate, specifier: "TwoDigits".localized())")
         }
     }
 }

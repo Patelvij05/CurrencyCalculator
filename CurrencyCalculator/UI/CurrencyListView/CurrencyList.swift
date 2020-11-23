@@ -46,19 +46,41 @@ struct CurrencyList: View {
                     // MARK: Dropdown
                     DropdownView(currency: self.$base_currency, showCurrencySelection: self.$showCurrencySelection)
                         .sheet(isPresented: self.$showCurrencySelection) {
-                            CurrencySelectionView(
-                                showCurrencySelection: self.$showCurrencySelection,
-                                selection: $base_currency)
-                                .environment(\.managedObjectContext, self.viewContext)
-                                .onDisappear {
-                                    DispatchQueue.main.async {
-                                        for rate in self.managedRate {
-                                            if rate.currency == base_currency {
-                                                exchangeRate = rate.value
+                            if self.managedCurrency.count == 0 {
+                                Text("")
+                                    .frame(width: 0, height: 0)
+                                    .onAppear {
+                                        self.showErrorAlert = true
+                                    }
+                                    .alert(isPresented: self.$showErrorAlert) {
+                                        Alert(
+                                            title: Text("ErrorNetTitle".localized()),
+                                            message: Text("ErrorNetBody".localized()),
+                                            primaryButton: .default(Text("ErrorRetry")) {
+                                                self.showErrorAlert = false
+                                                self.viewModel.reFetchCurrency()
+                                            },
+                                            secondaryButton: .cancel(Text("ErrorBack")) {
+                                                self.showErrorAlert = false
+                                                self.showCurrencySelection.toggle()
+                                            }
+                                        )
+                                    }
+                            } else {
+                                CurrencySelectionView(
+                                    showCurrencySelection: self.$showCurrencySelection,
+                                    selection: $base_currency)
+                                    .environment(\.managedObjectContext, self.viewContext)
+                                    .onDisappear {
+                                        DispatchQueue.main.async {
+                                            for rate in self.managedRate {
+                                                if rate.currency == base_currency {
+                                                    exchangeRate = rate.value
+                                                }
                                             }
                                         }
                                     }
-                                }
+                            }
                         }
                         .onAppear(){
                             if monitor.isConnected {
@@ -66,7 +88,7 @@ struct CurrencyList: View {
                             }
                         }
                     
-                    // MARK: Exchange Rates
+                    // MARK: Exchange Rates View
                     ExchangeRateView(amount: $amount, rate: $exchangeRate)
                     
                 }
@@ -84,13 +106,23 @@ struct CurrencyList: View {
                     }
                 }
                 
-                // MARK: On Results Fetched
-                if self.viewModel.ratesFetched {
+                // MARK: On Currency Fetched
+                if self.viewModel.currencyFetched {
                     Text("")
                         .frame(width: 0, height: 0)
                         .onAppear {
                             DispatchQueue.main.async {
                                 self.storeCurrencyListLocally()
+                            }
+                        }
+                }
+                
+                // MARK: On Rates Fetched
+                if self.viewModel.ratesFetched {
+                    Text("")
+                        .frame(width: 0, height: 0)
+                        .onAppear {
+                            DispatchQueue.main.async {
                                 self.storeRateListLocally()
                             }
                         }
@@ -120,7 +152,7 @@ struct CurrencyList: View {
                 
                 Spacer()
             }
-            .navigationTitle("AppName")
+            .navigationTitle("AppName".localized())
         }
     }
 }

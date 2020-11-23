@@ -14,6 +14,7 @@ enum ExchangeRatesService {
 
 extension ExchangeRatesService {
     
+    // MARK: Request to Fetch Exchange Rates
     static func requestQuotes() -> AnyPublisher<Rate, Error> {
         
         var components: URLComponents {

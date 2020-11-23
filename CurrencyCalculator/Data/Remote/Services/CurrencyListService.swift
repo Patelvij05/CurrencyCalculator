@@ -20,8 +20,8 @@ enum CurrencyListService {
 
 extension CurrencyListService {
     
+    // MARK: Request to Fetch Currency List
     static func request() -> AnyPublisher<Currency, Error> {
-        
         
         var components: URLComponents {
             var components = URLComponents()

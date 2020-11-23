@@ -36,14 +36,6 @@ struct CurrencyList: View {
     var body: some View {
         NavigationView {
             VStack {
-                Image(systemName: monitor.isConnected ? "wifi" : "wifi.slash")
-                    .font(.system(size: 56))
-                Text(monitor.isConnected ? "Connected!" : "Not connected!")
-                    .padding()
-                
-                Button("Perform Network Request") {
-                    self.showAlertSheet = true
-                }
                 TextField("$1", text: $amount)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .keyboardType(.numberPad)

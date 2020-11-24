@@ -26,7 +26,7 @@ Also taken care of following things:
 
 Future Scope:
 
-* Try to cover Uncle Bob’s clean swift architecture(Introduce Clean Swift)
+* Try to cover Uncle Bob’s clean architecture(Introduce Clean Swift)
 * Apply all the five design principles( currently covered 2 principles only) of SOLID principles to make software design more flexible, maintainable and scalable.
 
 ---
